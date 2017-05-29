@@ -93,9 +93,9 @@ class YOLO_TrainingNetwork:
         self.confidences = self.output_layer[:, START_IDX_CONFIDENCES: END_IDX_CONFIDENCES ]
         self.bboxes = self.output_layer[:, START_IDX_BBOXES : END_IDX_BBOXES]
 
-        print 'Class Probs: ', self.class_probs.get_shape().as_list()
-        print 'Confidences: ', self.confidences.get_shape().as_list()
-        print 'Bboxes: ', self.bboxes.get_shape().as_list()
+        print('Class Probs: ', self.class_probs.get_shape().as_list())
+        print('Confidences: ', self.confidences.get_shape().as_list())
+        print('Bboxes: ', self.bboxes.get_shape().as_list())
 
         self.class_probs = tf.reshape( self.class_probs,shape=[NUM_GRID*NUM_GRID,NUM_CLASSES])
         self.confidences = tf.reshape( self.confidences,shape=[NUM_GRID*NUM_GRID,2])
@@ -124,7 +124,7 @@ class YOLO_TrainingNetwork:
         if self.pretrained_weights:
             weight = np.empty(weight_shape, dtype = np.float32)
             weight_trained_path = os.path.join(self.weight_path, 'conv_weight_layer' + str(weight_index + 1) + '.csv')
-            print 'Loading weights from file: ' + weight_trained_path
+            print('Loading weights from file: ' + weight_trained_path)
             weight_trained = np.genfromtxt(weight_trained_path, delimiter = ',', dtype = np.float32)
             for i in range(weight_shape[0]):
                 for j in range(weight_shape[1]):
@@ -134,7 +134,7 @@ class YOLO_TrainingNetwork:
 
             bias = np.empty(bias_shape, dtype = 'float32')
             bias_trained_path = os.path.join(self.weight_path, 'conv_bias_layer' + str(weight_index + 1) + '.csv')
-            print 'Loading biases from file: ' + bias_trained_path
+            print('Loading biases from file: ' + bias_trained_path)
             bias_trained = np.genfromtxt(bias_trained_path, delimiter = ',', dtype = np.float32)
             for i in range(bias_shape[0]):
                 bias[i] = bias_trained[i]
@@ -171,7 +171,7 @@ class YOLO_TrainingNetwork:
         if self.pretrained_weights:
             weight = np.empty(weight_shape, dtype = np.float32)
             weight_trained_path = os.path.join(self.weight_path, 'connect_weight_layer' + str(weight_index + 1) + '.csv')
-            print 'Loading weights from file: ' + weight_trained_path
+            print('Loading weights from file: ' + weight_trained_path)
             weight_trained = np.genfromtxt(weight_trained_path, delimiter = ',', dtype = np.float32)
             for i in range(weight_shape[0]):
                 for j in range(weight_shape[1]):
@@ -179,7 +179,7 @@ class YOLO_TrainingNetwork:
 
             bias = np.empty(bias_shape, dtype = 'float32')
             bias_trained_path = os.path.join(self.weight_path, 'connect_bias_layer' + str(weight_index + 1) + '.csv')
-            print 'Loading biases from file: ' + bias_trained_path
+            print('Loading biases from file: ' + bias_trained_path)
             bias_trained = np.genfromtxt(bias_trained_path, delimiter = ',', dtype = np.float32)
             for i in range(bias_shape[0]):
                 bias[i] = bias_trained[i]

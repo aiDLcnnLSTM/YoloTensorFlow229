@@ -17,9 +17,9 @@ def assignSlice( tensor, index, sliceValue):
 
 
 def unionTF(a,b):
-	"""
-	Calculates the union of two rectangles, a and b, where each is an array [x,y,w,h]
-	"""
+    """
+    Calculates the union of two rectangles, a and b, where each is an array [x,y,w,h]
+    """
     w1 = tf.slice(a,[2,],[1,])
     h1 = tf.slice(a,[3,],[1,])
     w2 = tf.slice(b,[2,],[1,])
@@ -60,9 +60,9 @@ def intersectionTF(a,b):
     return tf.mul(xOverlap, yOverlap)
 
 def iouTF(a,b):
-	"""
-	Returns the intersection over union of two rectangles, a and b, where each is an array [x,y,w,h]
-	"""
+    """
+    Returns the intersection over union of two rectangles, a and b, where each is an array [x,y,w,h]
+    """
     return intersectionTF(a,b)/unionTF(a,b)
 
 
@@ -148,18 +148,18 @@ def konstantinesCodeButConverted(pred, gt):
                                     indexToAssign = i*S + j-l-1
                                     objectIn = assignSlice(objectIn,indexToAssign, sliceValue=1)
                                 if tf.less(tf.constant(j+l+1),tf.constant(S)):
-                                	indexToAssign = i*S + j+l+1
+                                    indexToAssign = i*S + j+l+1
                                     objectIn = assignSlice(objectIn,indexToAssign, sliceValue=1)
                         if tf.greater(height,halfBox):
                             boxOut = tf.floordive(height,halfBox)
                             for l in range(boxOut):
                                 # WILL BREAK WITH TENSOR
                             if tf.greater_equal(tf.constant(i-l-1),tf.constant(0)):
-                            	indexToAssign = (i-l-1)*S + j
-                            	objectIn = assignSlice(objectIn,indexToAssign, sliceValue=1)
+                                indexToAssign = (i-l-1)*S + j
+                                objectIn = assignSlice(objectIn,indexToAssign, sliceValue=1)
                             if tf.less(tf.constant(i+l+1),tf.constant(S)):
-                            	indexToAssign = (i+l+1)*S + j
-                            	objectIn = assignSlice(objectIn,indexToAssign, sliceValue=1)
+                                indexToAssign = (i+l+1)*S + j
+                                objectIn = assignSlice(objectIn,indexToAssign, sliceValue=1)
 
 
     # These are the two lambda coefficients of the cost function
@@ -178,40 +178,40 @@ def konstantinesCodeButConverted(pred, gt):
     for i in range(S):
         for j in range(S):
             for k in range(B):
-	            C1 = tf.slice(assignVal, [i,j,(k*5+4)], [1,])
-	            C2 = tf.slice(pred, [i,j,(k*5+4)], [1,] )
-	            #Calculating the value of terms 1-3
-	            useBox = tf.slice(assignBool, [i,j,k],[1,])
-	            if tf.equal( useBox ,tf.constant(1) ):
-					#1 values (x1,y1,w1,h1,C1) are the ground truth values
-					#2 values (x2,y2,w2,h2,C2) are the estimated truth
-					x1 = tf.slice(assignVal,[i,j,k*5])
-					x2 = tf.slice(pred,[i,j,(k*5)],[1,])
-					y1 = tf.slice(assignVal, [i,j,(k*5+1)], [1,])
-					y2 = tf.slice(pred, [i,j,(k*5+1)], [1,])
-					w1 = tf.slice( assignVal, [i,j,(k*5+2)], [1,])
-					w2 = tf.slice(pred, [i,j,(k*5+2)], [1,])
-					h1 = tf.slice(assignVal,[i,j,(k*5+3)], [1,])
-					h2 = tf.slice(pred, [i,j,(k*5+3)], [1,])
+                C1 = tf.slice(assignVal, [i,j,(k*5+4)], [1,])
+                C2 = tf.slice(pred, [i,j,(k*5+4)], [1,] )
+                #Calculating the value of terms 1-3
+                useBox = tf.slice(assignBool, [i,j,k],[1,])
+                if tf.equal( useBox ,tf.constant(1) ):
+                    #1 values (x1,y1,w1,h1,C1) are the ground truth values
+                    #2 values (x2,y2,w2,h2,C2) are the estimated truth
+                    x1 = tf.slice(assignVal,[i,j,k*5])
+                    x2 = tf.slice(pred,[i,j,(k*5)],[1,])
+                    y1 = tf.slice(assignVal, [i,j,(k*5+1)], [1,])
+                    y2 = tf.slice(pred, [i,j,(k*5+1)], [1,])
+                    w1 = tf.slice( assignVal, [i,j,(k*5+2)], [1,])
+                    w2 = tf.slice(pred, [i,j,(k*5+2)], [1,])
+                    h1 = tf.slice(assignVal,[i,j,(k*5+3)], [1,])
+                    h2 = tf.slice(pred, [i,j,(k*5+3)], [1,])
 
-					t1 += tf.square(x1-x2) + tf.square(y1-y2)
-					t2 += tf.square((w1**.5)-(w2**.5)) + tf.square((h1**.5)-(h2**.5))
-					t3 += tf.square(C1-C2)
+                    t1 += tf.square(x1-x2) + tf.square(y1-y2)
+                    t2 += tf.square((w1**.5)-(w2**.5)) + tf.square((h1**.5)-(h2**.5))
+                    t3 += tf.square(C1-C2)
             # Calculating the value of term 4
             else:
                 t4 = t4+ (C1-C2)**2
 
-	#The following calculates the values of term 5
-	for i in range (0,S):
-		for j in range (0,S):
-			if objectIn[i,j] ==1:
-				for k in range (0,numClass):
-					probClass1 = tf.slice(assignVal, [i,j, 10 + k], [1,])
-					probClass2 = tf.slice(pred, [i,j,10 + k], [1,] )
-					t5 = t5 + tf.square(probClass1-probClass2)
+    #The following calculates the values of term 5
+    for i in range (0,S):
+        for j in range (0,S):
+            if objectIn[i,j] ==1:
+                for k in range (0,numClass):
+                    probClass1 = tf.slice(assignVal, [i,j, 10 + k], [1,])
+                    probClass2 = tf.slice(pred, [i,j,10 + k], [1,] )
+                    t5 = t5 + tf.square(probClass1-probClass2)
 
-	#We sum up total loss, factoring in lambda values
-	totalLoss =  tf.mul(lamdbaCoord,t1) + tf.mul(lamdbaCoord,t2) + t3 + tf.mul(lambdaNoObj,t4) + t5
-	return totalLoss
+    #We sum up total loss, factoring in lambda values
+    totalLoss =  tf.mul(lamdbaCoord,t1) + tf.mul(lamdbaCoord,t2) + t3 + tf.mul(lambdaNoObj,t4) + t5
+    return totalLoss
 
 

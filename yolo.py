@@ -79,7 +79,7 @@ class YOLO:
         if self.weight_path:
             weight = np.empty(weight_shape, dtype = np.float32)
             weight_trained_path = os.path.join(self.weight_path, 'conv_weight_layer' + str(weight_index + 1) + '.csv')
-            print 'Loading weights from file: ' + weight_trained_path
+            print('Loading weights from file: ' + weight_trained_path)
             weight_trained = np.genfromtxt(weight_trained_path, delimiter = ',', dtype = np.float32)
             for i in range(weight_shape[0]):
                 for j in range(weight_shape[1]):
@@ -89,7 +89,7 @@ class YOLO:
 
             bias = np.empty(bias_shape, dtype = 'float32')
             bias_trained_path = os.path.join(self.weight_path, 'conv_bias_layer' + str(weight_index + 1) + '.csv')
-            print 'Loading biases from file: ' + bias_trained_path
+            print('Loading biases from file: ' + bias_trained_path)
             bias_trained = np.genfromtxt(bias_trained_path, delimiter = ',', dtype = np.float32)
             for i in range(bias_shape[0]):
                 bias[i] = bias_trained[i]
@@ -119,7 +119,7 @@ class YOLO:
         if self.weight_path:
             weight = np.empty(weight_shape, dtype = np.float32)
             weight_trained_path = os.path.join(self.weight_path, 'connect_weight_layer' + str(weight_index + 1) + '.csv')
-            print 'Loading weights from file: ' + weight_trained_path
+            print('Loading weights from file: ' + weight_trained_path)
             weight_trained = np.genfromtxt(weight_trained_path, delimiter = ',', dtype = np.float32)
             for i in range(weight_shape[0]):
                 for j in range(weight_shape[1]):
@@ -127,7 +127,7 @@ class YOLO:
 
             bias = np.empty(bias_shape, dtype = 'float32')
             bias_trained_path = os.path.join(self.weight_path, 'connect_bias_layer' + str(weight_index + 1) + '.csv')
-            print 'Loading biases from file: ' + bias_trained_path
+            print('Loading biases from file: ' + bias_trained_path)
             bias_trained = np.genfromtxt(bias_trained_path, delimiter = ',', dtype = np.float32)
             for i in range(bias_shape[0]):
                 bias[i] = bias_trained[i]
@@ -195,7 +195,7 @@ class YOLO:
             ret, frame = cap.read()
 
             if i >= start_frame:
-                print "processing frame " + str(i)
+                print("processing frame " + str(i))
                 frame_out, bounding_boxes = self.process_image(frame)
                 frame_window.append(bounding_boxes)
                 # number of con
@@ -206,7 +206,7 @@ class YOLO:
                 #    self.group_cropped(frame_window, len(bounding_boxes))
                 #frame_detections.append(bounding_boxes)
                 #for box in bounding_boxes:
-                #    print box.category
+                #    print(box.category)
                 #cv2.imwrite('data/' + str(i) + '.png', frame_out)
                 out.write(frame_out)
             i = i + 1
@@ -245,7 +245,7 @@ class YOLO:
                 break
             else:
                 c_old = c
-        print c_old
+        print(c_old)
 
 def main():
     parser = argparse.ArgumentParser()

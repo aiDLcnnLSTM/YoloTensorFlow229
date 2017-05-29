@@ -8,15 +8,15 @@ from data_utils import *
 
 def YoloNetwork():
 
-	def __init__():
-		pass
+    def __init__():
+        pass
 
-	def trainNetwork():
-		pass
+    def trainNetwork():
+        pass
 
-	def testNetwork():
-		pass
+    def testNetwork():
+        pass
 
 
 if __name__ == '__main__':
-	runNetwork()
+    runNetwork()
