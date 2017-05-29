@@ -6,6 +6,8 @@ import numpy as np
 import tensorflow as tf
 
 from plot_utils import *
+from functools import reduce
+
 
 class YOLO:
     def __init__(self, weight_path, checkpoint_path):
@@ -182,15 +184,19 @@ class YOLO:
         img_out = img.copy()
         return plot_detections_on_im(img_out, probs, confidences, bboxes, classes)
 
-    def process_video(self, video_path):
+    def process_video(self, video_path, start_frame, end_frame):
         frame_detections = []
+        print("video_path", video_path)
         cap = cv2.VideoCapture(video_path)
-        w = int(cap.get(cv2.cv.CV_CAP_PROP_FRAME_WIDTH))
-        h = int(cap.get(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT))
-        out = cv2.VideoWriter('data/output.avi', cv2.cv.CV_FOURCC(*'XVID'), 20.0, (w, h))
+        
+        w = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+        h = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        fourcc = cv2.VideoWriter_fourcc(*'XVID')
+        out = cv2.VideoWriter('data/output.avi', fourcc, 20.0, (w, h))
 
         i = 0
         frame_window = []
+        print(cap.isOpened())
         while cap.isOpened() and i < end_frame:
             ret, frame = cap.read()
 
@@ -268,6 +274,8 @@ def main():
         cv2.imwrite('data/out.png', img)
     if args.video_path:
         video_path = os.path.abspath(os.path.expanduser(args.video_path))
+        print(video_path)
+        print(args.start, args.end)
         yolo.process_video(video_path, int(args.start), int(args.end))
 
 if __name__ == "__main__":
